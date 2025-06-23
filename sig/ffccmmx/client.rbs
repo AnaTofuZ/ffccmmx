@@ -1,0 +1,10 @@
+module Ffccmmx
+  class Client
+    def initialize: (String, String, String, Configuration) -> void
+    def push: (Object,?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
+
+    def subscribe: (String, *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
+
+    def unsubscribe: (String, *String ,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
+  end
+end

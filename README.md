@@ -1,8 +1,9 @@
 # Ffccmmx
 
-TODO: Delete this and the text below, and describe your gem
+Ffccmmx is a Firebase Cloud Messaging (FCM) client for Ruby, built on top of the [httpx](https://rubygems.org/gems/httpx).
+It is based on the original [fcmpush gem](https://rubygems.org/gems/fcmpush).
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ffccmmx`. To experiment with that code, run `bin/console` for an interactive prompt.
+By leveraging httpx, this gem enables HTTP/2 communication while maintaining an interface that is almost identical to fcmpush.
 
 ## Installation
 
@@ -22,7 +23,71 @@ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 
 ## Usage
 
-TODO: Write usage instructions here
+### Configuration
+
+```ruby
+Ffccmmx.configure do |config|
+  config.scope = ["https://www.googleapis.com/auth/cloud-platform"]
+  config.json_key_io = StringIO.new('{"key": "value"}')
+  config.proxy = "http://proxy.example.com"
+  config.httpx_options = {
+    timeout: {
+      connect_timeout:  5,  
+    },
+  }
+end
+```
+
+or You can use environment variables:
+
+```bash
+export GOOGLE_ACCOUNT_TYPE = 'service_account'
+export GOOGLE_CLIENT_ID = '000000000000000000000'
+export GOOGLE_CLIENT_EMAIL = 'xxxx@xxxx.iam.gserviceaccount.com'
+export GOOGLE_PRIVATE_KEY = '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n'
+```
+
+or You can use a JSON key file:
+
+```ruby
+Ffccmmx.configure do |config|
+  config.json_key_io = File.open('/path/to/your/service_account_credentials.json')
+end
+```
+
+### Pushing Messages
+
+```ruby
+@client = Ffccmmx.new(project_id)
+notification_message = { 
+  message: {
+    token: device_token,
+    notification: {
+      title: "test title",
+      body: "test body"
+    }
+  }
+}
+response = @client.push(notification_message)
+response.json
+```
+
+response is an instance of `Ffccmmx::Response`, which contains the response from the FCM server. You can access the JSON response using `response.json`.
+The Fcmpush response uses symbols for its keys, while the Ffccmmx response uses strings.
+
+### Subscribe
+
+```ruby
+@client = Ffccmmx.new(project_id)
+response = @client.subscribe('/topics/test_topic', device_token)
+```
+
+### Unsubscribe
+
+```ruby
+@client = Ffccmmx.new(project_id)
+response = @client.unsubscribe('/topics/test_topic', device_token)
+```
 
 ## Development
 
