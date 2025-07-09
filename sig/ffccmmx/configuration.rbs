@@ -1,0 +1,11 @@
+module Ffccmmx
+  class Configuration
+    @json_key_io: IO?
+    @scope: Array[String]
+    @httpx_options: HTTPX::Options? | Hash[Symbol, untyped]?
+
+    attr_accessor json_key_io: IO? | StringIO?
+    attr_accessor scope: Array[String]
+    attr_accessor httpx_options: HTTPX::Options? | Hash[Symbol, untyped]?
+  end
+end

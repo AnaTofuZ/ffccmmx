@@ -25,3 +25,7 @@ jobs:
           bundler-cache: true
       - name: Run the default task
         run: bundle exec rake
+        env:
+          TEST_FIREBASE_PROJECT_ID: ${{ secrets.TEST_FIREBASE_PROJECT_ID }}
+          TEST_DEVICE_TOKEN: ${{ secrets.TEST_DEVICE_TOKEN }}
+          TEST_JSON: ${{ secrets.TEST_JSON }}

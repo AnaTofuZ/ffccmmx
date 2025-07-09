@@ -1,4 +1,10 @@
 module Ffccmmx
   VERSION: String
-  # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+
+  def self.build: (String, ?base_url:  String, ?topic_base_url:  String)-> Client
+  def self.new: (String, ?base_url: String, ?topic_base_url: String)-> Client
+
+  def self.configuration: () -> Configuration
+  def self.reset_configuration: () -> Configuration
+  def self.configure: () { (Configuration) -> void } -> void
 end
