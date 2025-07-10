@@ -3,8 +3,14 @@ module Ffccmmx
     def initialize: (String, String, String, Configuration) -> void
     def push: (Object,?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
 
+    def concurrent_push: (Array[Object], ?headers: Hash[Symbol, untyped]) -> untyped
+
     def subscribe: (String, *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
 
+    def concurrent_subscribe: (Array[String], *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
+
     def unsubscribe: (String, *String ,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
+
+    def concurrent_unsubscribe: (Array[String], *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
   end
 end

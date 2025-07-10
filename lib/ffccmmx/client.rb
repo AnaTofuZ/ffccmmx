@@ -4,6 +4,7 @@ require "uri"
 require "googleauth"
 require "httpx"
 require "ffccmmx/exceptions"
+require "ffccmmx/response"
 
 module Ffccmmx
   class Client
@@ -39,12 +40,24 @@ module Ffccmmx
       do_push_request(body, headers)
     end
 
+    def concurrent_push(bodies, headers: {})
+      do_concurrent_push_request(bodies, headers)
+    end
+
     def subscribe(topic, *instance_ids, query: {}, headers: {})
       do_subscription_request(topic, *instance_ids, :subscribe, query, headers)
     end
 
+    def concurrent_subscribe(topic, *instance_ids, query: {}, headers: {})
+      do_concurrent_subscription_request(topic, *instance_ids, :subscribe, query, headers)
+    end
+
     def unsubscribe(topic, *instance_ids, query: {}, headers: {})
       do_subscription_request(topic, *instance_ids, :unsubscribe, query, headers)
+    end
+
+    def concurrent_unsubscribe(topic, *instance_ids, query: {}, headers: {})
+      do_concurrent_subscription_request(topic, *instance_ids, :unsubscribe, query, headers)
     end
 
     private
@@ -85,16 +98,34 @@ module Ffccmmx
 
     def do_push_request(json, headers)
       access_token_refresh
-      send_request(@push_uri, json, headers)
+      send_post_request(@push_uri, json, headers)
+    end
+
+    def do_concurrent_push_request(bodies, headers)
+      access_token_refresh
+      requests = bodies.map { |body| [:post, @push_uri.to_s, { json: body, headers: }] }
+      send_concurrent_post_request(requests)
+    end
+
+    def prepare_subscription_request(action, query, headers)
+      access_token_refresh
+      headers["access_token_auth"] = "true"
+      uri = (action == :subscribe ? @batch_subscribe_uri.dup : @batch_unsubscribe_uri).dup
+      uri.query = URI.encode_www_form(query) unless query.empty?
+      [uri, headers]
     end
 
     def do_subscription_request(topic, *instance_ids, action, query, headers)
-      access_token_refresh
-      headers["access_token_auth"] = "true"
+      uri, headers = prepare_subscription_request(action, query, headers)
+      send_post_request(uri, make_subscription_body(topic, *instance_ids), headers)
+    end
 
-      uri = action == :subscribe ? @batch_subscribe_uri.dup : @batch_unsubscribe_uri.dup
-      uri.query = URI.encode_www_form(query) unless query.empty?
-      send_request(uri, make_subscription_body(topic, *instance_ids), headers)
+    def do_concurrent_subscription_request(topic, *instance_ids, action, query, headers)
+      uri, headers = prepare_subscription_request(action, query, headers)
+      requests = instance_ids.map do |instance_id|
+        [:post, uri.to_s, { json: make_subscription_body(topic, instance_id), headers: }]
+      end
+      send_concurrent_post_request(requests)
     end
 
     def make_subscription_body(topic, *instance_ids)
@@ -105,12 +136,16 @@ module Ffccmmx
       }
     end
 
-    def send_request(uri, json, headers)
+    def send_post_request(uri, json, headers)
       httpx.bearer_auth(access_token).post(uri.to_s, json:, headers:).raise_for_status
     rescue HTTPX::Error => e
       raise Ffccmmx::HTTPXError, cause: e
     rescue StandardError => e
       raise Ffccmmx::Error, cause: e
+    end
+
+    def send_concurrent_post_request(requests)
+      httpx.bearer_auth(access_token).request(requests).map { |response| Ffccmmx::Response.new(response) }
     end
 
     def access_token_refresh
