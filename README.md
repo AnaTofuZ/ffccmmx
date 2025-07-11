@@ -72,8 +72,42 @@ response = @client.push(notification_message)
 response.json
 ```
 
-response is an instance of `Ffccmmx::Response`, which contains the response from the FCM server. You can access the JSON response using `response.json`.
+response is an instance of `HTTPX::Response`, which contains the response from the FCM server. You can access the JSON response using `response.json`.
 The Fcmpush response uses symbols for its keys, while the Ffccmmx response uses strings.
+
+### Concurrent Pushing Messages
+
+```ruby
+@client = Ffccmmx.new(project_id)
+notification_messages = [ 
+  {
+    message: {
+      token: device_token,
+      notification: {
+        title: "test title",
+        body: "test body"
+      }
+    }
+  },
+  {
+    message: {
+      token: other_device_token,
+      notification: {
+        title: "test title",
+        body: "test body"
+      }
+    }
+  },
+]
+responses = @client.concurrent_push(notification_messages)
+responses.each do |response|
+  httpx_response = response.value
+end
+```
+
+The `concurrent_push` method sends requests using HTTP/2 multiplexing. 
+The response is wrapped in an Ffccmmx::Response object. you can get the HTTPX::Response with #value, or an Ffccmmx::Error will be raised.
+
 
 ### Subscribe
 
@@ -82,11 +116,25 @@ The Fcmpush response uses symbols for its keys, while the Ffccmmx response uses 
 response = @client.subscribe('/topics/test_topic', device_token)
 ```
 
+## Concurrent Subscribe
+
+```ruby
+@client = Ffccmmx.new(project_id)
+response = @client.subscribe('/topics/test_topic', *device_tokens)
+```
+
 ### Unsubscribe
 
 ```ruby
 @client = Ffccmmx.new(project_id)
 response = @client.unsubscribe('/topics/test_topic', device_token)
+```
+
+## Concurrent Unsubscribe
+
+```ruby
+@client = Ffccmmx.new(project_id)
+response = @client.unsubscribe('/topics/test_topic', *device_tokens)
 ```
 
 ## Development
