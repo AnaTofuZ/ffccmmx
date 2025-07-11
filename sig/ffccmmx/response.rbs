@@ -1,0 +1,5 @@
+module Ffccmmx
+  class Response
+    def value: -> HTTPX::Response
+  end
+end
