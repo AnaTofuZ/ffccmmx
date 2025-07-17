@@ -16,3 +16,13 @@ Metrics/ClassLength:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+    - 'ffccmmx.gemspec'
+
+
+Metrics/MethodLength:
+  Exclude:
+    - 'spec/**/*'
+
+Style/MultilineBlockChain:
+  Exclude:
+    - 'spec/**/*'

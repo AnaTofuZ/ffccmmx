@@ -139,6 +139,10 @@ module Ffccmmx
     def send_post_request(uri, json, headers)
       httpx.bearer_auth(access_token).post(uri.to_s, json:, headers:).raise_for_status
     rescue HTTPX::Error => e
+      if Ffccmmx::HTTPXRetryableError.retryable_error?(e)
+        raise Ffccmmx::HTTPXRetryableError, response: e.response, cause: e
+      end
+
       raise Ffccmmx::HTTPXError, cause: e
     rescue StandardError => e
       raise Ffccmmx::Error, cause: e

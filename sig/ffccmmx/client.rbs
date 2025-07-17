@@ -7,10 +7,10 @@ module Ffccmmx
 
     def subscribe: (String, *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
 
-    def concurrent_subscribe: (Array[String], *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
+    def concurrent_subscribe: (String, *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
 
     def unsubscribe: (String, *String ,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
 
-    def concurrent_unsubscribe: (Array[String], *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
+    def concurrent_unsubscribe: (String, *String,?query: Enumerable[untyped], ?headers: Hash[Symbol,untyped] ) -> HTTPX::Response
   end
 end

@@ -36,6 +36,31 @@
     targets = [];
     version = "0.3.0";
   };
+  bigdecimal = {
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1p2szbr4jdvmwaaj2kxlbv1rp0m6ycbgfyp0kjkkkswmniv5y21r";
+      target = "ruby";
+      type = "gem";
+    };
+    targets = [];
+    version = "3.2.2";
+  };
+  crack = {
+    dependencies = ["bigdecimal" "rexml"];
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0jaa7is4fw1cxigm8vlyhg05bw4nqy4f91zjqxk7pp4c8bdyyfn8";
+      target = "ruby";
+      type = "gem";
+    };
+    targets = [];
+    version = "1.0.0";
+  };
   date = {
     groups = ["default"];
     platforms = [];
@@ -184,6 +209,18 @@
     };
     targets = [];
     version = "1.14.0";
+  };
+  hashdiff = {
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1da0w5v7ppxrgvh58bafjklzv73nknyq73if6d9rkz2v24zg3169";
+      target = "ruby";
+      type = "gem";
+    };
+    targets = [];
+    version = "1.2.0";
   };
   http-2 = {
     groups = ["default"];
@@ -556,6 +593,18 @@
     targets = [];
     version = "3.1.2";
   };
+  rexml = {
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1jmbf6lf7pcyacpb939xjjpn1f84c3nw83dy3p1lwjx0l2ljfif7";
+      target = "ruby";
+      type = "gem";
+    };
+    targets = [];
+    version = "3.4.1";
+  };
   rspec = {
     dependencies = ["rspec-core" "rspec-expectations" "rspec-mocks"];
     groups = ["default"];
@@ -683,6 +732,18 @@
     targets = [];
     version = "3.1.7";
   };
+  timecop = {
+    groups = ["development"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1syq1hdxq13ggy5c4sfk2378kzc1cgxdyv6b8c86pkydaz74bfhj";
+      target = "ruby";
+      type = "gem";
+    };
+    targets = [];
+    version = "0.9.10";
+  };
   trailblazer-option = {
     groups = ["default"];
     platforms = [];
@@ -743,5 +804,18 @@
     };
     targets = [];
     version = "1.0.3";
+  };
+  webmock = {
+    dependencies = ["addressable" "crack" "hashdiff"];
+    groups = ["development"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "08v374yrqqhjj3xjzmvwnv3yz21r22kn071yr0i67gmwaf9mv7db";
+      target = "ruby";
+      type = "gem";
+    };
+    targets = [];
+    version = "3.25.1";
   };
 }
