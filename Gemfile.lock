@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ffccmmx (0.1.0)
+    ffccmmx (0.2.0)
       google-apis-identitytoolkit_v3 (~> 0.18.0)
       httpx (~> 1.5)
 
