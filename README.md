@@ -137,6 +137,19 @@ response = @client.unsubscribe('/topics/test_topic', device_token)
 response = @client.unsubscribe('/topics/test_topic', *device_tokens)
 ```
 
+## Error Response
+
+`Ffccmmx::HTTPXRetryableError` is returned, you can use the retry_time method to get a Time object indicating when the next request can be executed. 
+If the request has already been attempted multiple times, you can pass the attempt count as an argument, and it will be taken into account even if the Retry-After header is not present in the response.
+
+```ruby
+begin
+  @client.push(notification_message)
+rescue Ffccmmx::HTTPXRetryableError => e
+    puts "Retry after: #{e.retry_time}"
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
