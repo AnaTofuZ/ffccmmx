@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.3.0] - 2025-07-23
+
+- Add #response at HTTPXErrpr
+
 ## [0.2.0] - 2025-07-18
 
 - Add HTTPXRetryableError
