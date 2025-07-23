@@ -3,11 +3,16 @@
 module Ffccmmx
   class Error < StandardError; end
 
-  class HTTPXError < Error; end
-
-  class HTTPXRetryableError < HTTPXError
+  class HTTPXError < Error
     attr_reader :response
 
+    def initialize(response)
+      @response = response
+      super()
+    end
+  end
+
+  class HTTPXRetryableError < HTTPXError
     RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504].freeze
     private_constant :RETRYABLE_STATUS_CODES
     def self.retryable_error?(error)
@@ -15,11 +20,6 @@ module Ffccmmx
       return false if error.response.nil?
 
       RETRYABLE_STATUS_CODES.include?(error.response.status)
-    end
-
-    def initialize(response)
-      @response = response
-      super()
     end
 
     def retry_time(count: 1)

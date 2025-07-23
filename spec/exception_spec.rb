@@ -6,6 +6,15 @@ require "ffccmmx/exceptions"
 require "timecop"
 
 RSpec.describe Ffccmmx::HTTPXRetryableError do
+  describe "#response" do
+    let(:response) { OpenStruct.new(status: 500, headers: { "retry-after" => "10" }) }
+    let(:error) { described_class.new(response) }
+
+    it "returns the response object" do
+      expect(error.response).to eq(response)
+    end
+  end
+
   describe "#retry_time" do
     before do
       Timecop.freeze(Time.now)
