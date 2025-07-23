@@ -20,6 +20,7 @@ RSpec.describe "Ffccmmx::Response" do
                                  status: 400,
                                  json: { "error" => "Invalid token" })
       httpx_exception = HTTPX::Error.new
+      allow(httpx_exception).to receive(:response).and_return(response)
       allow(response).to receive(:raise_for_status).and_raise(httpx_exception)
 
       expect { Ffccmmx::Response.new(response).value }.to raise_error(Ffccmmx::HTTPXError)

@@ -1,5 +1,8 @@
 module Ffccmmx
-  class HTTPXRetryableError < HTTPX::Error
+  class HTTPXError
+    attr_reader response: HTTPX::Response
+  end
+  class HTTPXRetryableError
     attr_reader response: HTTPX::Response
 
     def self.retryable_error?:(HTTPX::Error) -> bool

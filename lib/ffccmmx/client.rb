@@ -143,7 +143,7 @@ module Ffccmmx
         raise Ffccmmx::HTTPXRetryableError, response: e.response, cause: e
       end
 
-      raise Ffccmmx::HTTPXError, cause: e
+      raise Ffccmmx::HTTPXError, response: e.response, cause: e
     rescue StandardError => e
       raise Ffccmmx::Error, cause: e
     end
