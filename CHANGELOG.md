@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.3.1] - 2025/07/31
+
+- Fix: `#concurrent_xxx` method fails when handling a single request.
+
+
 ## [0.3.0] - 2025-07-23
 
 - Add #response at HTTPXErrpr
