@@ -149,7 +149,7 @@ module Ffccmmx
     end
 
     def send_concurrent_post_request(requests)
-      httpx.bearer_auth(access_token).request(requests).map { |response| Ffccmmx::Response.new(response) }
+      Array(httpx.bearer_auth(access_token).request(requests)).map { |response| Ffccmmx::Response.new(response) }
     end
 
     def access_token_refresh

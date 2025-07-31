@@ -263,6 +263,34 @@ RSpec.describe Ffccmmx do
         expect(error.cause).to be_a(HTTPX::HTTPError)
       end
     end
+
+    it "send single message" do
+      mock_fcm_send_request(
+        response_status: 200,
+        response_body: { name: "projects/project_id/messages/message_id" }
+      )
+
+      client = Ffccmmx.new("project_id")
+      requests = [
+        {
+          message: {
+            token: "test_device_token_1",
+            notification: {
+              title: "test title 1",
+              body: "test body 1"
+            }
+          }
+        }
+      ]
+      response = client.concurrent_push(requests)
+
+      expect(response.size).to eq(1)
+      response.each do |res|
+        expect(res.value.status).to eq(200)
+        expect(res.value.json["name"]).to start_with("projects/project_id/messages/")
+        expect(res.value.version).to eq("2.0")
+      end
+    end
   end
 
   describe "#subscription" do
