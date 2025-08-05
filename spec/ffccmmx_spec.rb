@@ -179,6 +179,7 @@ RSpec.describe Ffccmmx do
       client = Ffccmmx.new("project_id")
       expect { client.push(notification_message) }.to raise_error(Ffccmmx::HTTPXError) do |error|
         expect(error.cause).to be_a(HTTPX::HTTPError)
+        expect(error.response).to be_a(HTTPX::Response)
       end
     end
 
@@ -247,6 +248,7 @@ RSpec.describe Ffccmmx do
       expect(response.size).to eq(2)
       expect { response[-1].value }.to raise_error(Ffccmmx::HTTPXRetryableError) do |error|
         expect(error.cause).to be_a(HTTPX::HTTPError)
+        expect(error.response).to be_a(HTTPX::Response)
       end
     end
 
@@ -261,6 +263,7 @@ RSpec.describe Ffccmmx do
       expect(response.size).to eq(2)
       expect { response[-1].value }.to raise_error(Ffccmmx::HTTPXError) do |error|
         expect(error.cause).to be_a(HTTPX::HTTPError)
+        expect(error.response).to be_a(HTTPX::Response)
       end
     end
 
@@ -323,6 +326,7 @@ RSpec.describe Ffccmmx do
       client = Ffccmmx.new("project_id")
       expect { client.subscribe(topic, *instance_ids) }.to raise_error(Ffccmmx::HTTPXError) do |error|
         expect(error.cause).to be_a(HTTPX::HTTPError)
+        expect(error.response).to be_a(HTTPX::Response)
       end
     end
   end
@@ -362,6 +366,7 @@ RSpec.describe Ffccmmx do
       expect(response.size).to eq(2)
       expect { response[-1].value }.to raise_error(Ffccmmx::HTTPXError) do |error|
         expect(error.cause).to be_a(HTTPX::HTTPError)
+        expect(error.response).to be_a(HTTPX::Response)
       end
     end
   end
@@ -397,6 +402,7 @@ RSpec.describe Ffccmmx do
         client.unsubscribe(topic, *instance_ids)
       end.to raise_error(Ffccmmx::HTTPXError) do |error|
         expect(error.cause).to be_a(HTTPX::HTTPError)
+        expect(error.response).to be_a(HTTPX::Response)
       end
     end
   end
@@ -436,6 +442,7 @@ RSpec.describe Ffccmmx do
       expect(response.size).to eq(2)
       expect { response[-1].value }.to raise_error(Ffccmmx::HTTPXError) do |error|
         expect(error.cause).to be_a(HTTPX::HTTPError)
+        expect(error.response).to be_a(HTTPX::Response)
       end
     end
   end
