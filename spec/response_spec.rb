@@ -23,7 +23,9 @@ RSpec.describe "Ffccmmx::Response" do
       allow(httpx_exception).to receive(:response).and_return(response)
       allow(response).to receive(:raise_for_status).and_raise(httpx_exception)
 
-      expect { Ffccmmx::Response.new(response).value }.to raise_error(Ffccmmx::HTTPXError)
+      expect { Ffccmmx::Response.new(response).value }.to raise_error(Ffccmmx::HTTPXError) do |error|
+        expect(error.response).to eq(response)
+      end
     end
 
     it "httpx retryable exception" do
@@ -35,7 +37,9 @@ RSpec.describe "Ffccmmx::Response" do
       httpx_exception = HTTPX::HTTPError.new(response)
       allow(response).to receive(:raise_for_status).and_raise(httpx_exception)
 
-      expect { Ffccmmx::Response.new(response).value }.to raise_error(Ffccmmx::HTTPXRetryableError)
+      expect { Ffccmmx::Response.new(response).value }.to raise_error(Ffccmmx::HTTPXRetryableError) do |error|
+        expect(error.response).to eq(response)
+      end
     end
   end
 end

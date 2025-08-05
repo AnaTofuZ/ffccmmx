@@ -11,11 +11,9 @@ module Ffccmmx
     def value
       @response.raise_for_status
     rescue HTTPX::Error => e
-      if Ffccmmx::HTTPXRetryableError.retryable_error?(e)
-        raise Ffccmmx::HTTPXRetryableError, response: e.response, cause: e
-      end
+      raise Ffccmmx::HTTPXRetryableError.new(e.response), cause: e if Ffccmmx::HTTPXRetryableError.retryable_error?(e)
 
-      raise Ffccmmx::HTTPXError, response: e.response, cause: e
+      raise Ffccmmx::HTTPXError.new(e.response), cause: e
     rescue StandardError => e
       raise Ffccmmx::Error, cause: e
     end
