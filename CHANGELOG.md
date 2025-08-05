@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.3.2] - 2025/08/05
+
+- Fix: error.response cannot be retrieved.
+
 ## [0.3.1] - 2025/07/31
 
 - Fix: `#concurrent_xxx` method fails when handling a single request.
